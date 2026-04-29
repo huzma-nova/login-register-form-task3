@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+<title>Login & Register</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.box {
+  background: white;
+  width: 320px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  text-align: center;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px;
+  width: 100%;
+  background: #667eea;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #5a67d8;
+}
+
+.form { display: none; }
+.active { display: block; }
+
+.switch {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.switch span {
+  color: #667eea;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.success {
+  color: green;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Password eye */
+.eye {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+  <h2 id="title">Login</h2>
+
+  <!-- Login -->
+  <form id="loginForm" class="form active">
+    <input type="text" id="loginEmail" placeholder="Email">
+    <div id="loginEmailError" class="error"></div>
+
+    <div style="position:relative;">
+      <input type="password" id="loginPass" placeholder="Password">
+      <span class="eye" onclick="togglePassword('loginPass')">👁️</span>
+    </div>
+    <div id="loginPassError" class="error"></div>
+
+    <button type="submit">Login</button>
+
+    <div class="switch">
+      Don't have an account? 
+      <span onclick="showRegister()">Register</span>
+    </div>
+  </form>
+
+  <!-- Register -->
+  <form id="registerForm" class="form">
+    <input type="text" id="name" placeholder="Name">
+    <div id="nameError" class="error"></div>
+
+    <input type="text" id="email" placeholder="Email">
+    <div id="emailError" class="error"></div>
+
+    <div style="position:relative;">
+      <input type="password" id="pass" placeholder="Password">
+      <span class="eye" onclick="togglePassword('pass')">👁️</span>
+    </div>
+    <div id="passError" class="error"></div>
+
+    <button type="submit">Register</button>
+
+    <div class="switch">
+      Already have an account? 
+      <span onclick="showLogin()">Login</span>
+    </div>
+  </form>
+
+  <!-- Success Message -->
+  <div id="successMsg" class="success"></div>
+
+</div>
+
+<script>
+
+// Switch forms
+function showRegister() {
+  document.getElementById("loginForm").classList.remove("active");
+  document.getElementById("registerForm").classList.add("active");
+  document.getElementById("title").innerText = "Register";
+  document.getElementById("successMsg").innerText = "";
+}
+
+function showLogin() {
+  document.getElementById("registerForm").classList.remove("active");
+  document.getElementById("loginForm").classList.add("active");
+  document.getElementById("title").innerText = "Login";
+  document.getElementById("successMsg").innerText = "";
+}
+
+// Password toggle
+function togglePassword(id) {
+  let input = document.getElementById(id);
+  input.type = input.type === "password" ? "text" : "password";
+}
+
+// Login validation
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let email = document.getElementById("loginEmail").value;
+  let pass = document.getElementById("loginPass").value;
+
+  let valid = true;
+
+  if (!email.includes("@")) {
+    document.getElementById("loginEmailError").innerText = "Invalid email";
+    valid = false;
+  } else {
+    document.getElementById("loginEmailError").innerText = "";
+  }
+
+  if (pass.length < 6) {
+    document.getElementById("loginPassError").innerText = "Min 6 characters";
+    valid = false;
+  } else {
+    document.getElementById("loginPassError").innerText = "";
+  }
+
+  if (valid) {
+    document.getElementById("successMsg").innerText = "✅ Login Successful!";
+  }
+});
+
+// Register validation
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let pass = document.getElementById("pass").value;
+
+  let valid = true;
+
+  if (name.length < 3) {
+    document.getElementById("nameError").innerText = "Min 3 characters";
+    valid = false;
+  } else {
+    document.getElementById("nameError").innerText = "";
+  }
+
+  if (!email.includes("@")) {
+    document.getElementById("emailError").innerText = "Invalid email";
+    valid = false;
+  } else {
+    document.getElementById("emailError").innerText = "";
+  }
+
+  if (pass.length < 6) {
+    document.getElementById("passError").innerText = "Min 6 characters";
+    valid = false;
+  } else {
+    document.getElementById("passError").innerText = "";
+  }
+
+  if (valid) {
+    document.getElementById("successMsg").innerText = "✅ Registered Successfully!";
+  }
+});
+
+</script>
+
+</body>
+</html>
